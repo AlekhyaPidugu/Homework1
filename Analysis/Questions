@@ -36,3 +36,85 @@ plan_count_table_after_exclusions <- filtered_data %>%
 
 # Print the updated table
 print(plan_count_table_after_exclusions, n=27)
+
+# Preliminaries -----------------------------------------------------------
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
+
+
+# Remove special needs plans (SNP), employer group plans (eghp), and all "800-series" plans
+filtered_data <- subset(data, 
+                        !(plan_type %in% c("SNP", "eghp") | grepl("^800", plan_type)))
+
+# Create a table of the count of plans under each plan type in each year
+plan_count_table <- table(filtered_data$plan_type, filtered_data$year)
+
+# Print the updated table
+print(plan_count_table)
+
+
+# Load necessary libraries
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
+
+# Group by county and year, calculate average enrollees
+average_enrollees_per_county <- your_filtered_data %>%
+  group_by(county, year) %>%
+  summarise(avg_enrollees = mean(enrollees, na.rm = TRUE))
+
+if (!require("ascii")) install.packages("ascii")
+
+# Load necessary libraries
+library(ascii)
+
+# Assuming you have already calculated 'average_enrollees_per_county' as in the previous example
+
+# Display the ASCII plot in the terminal
+ascii_plot <- histogram(average_enrollees_per_county$avg_enrollees, main = "Average Enrollees per County")
+cat(ascii_plot)
+
+print(ascii_plot)
+
+# Calculate the average premium over time
+average_premium_over_time <- merged_data %>%
+  group_by(year) %>%
+  summarise(avg_premium = mean(premium, na.rm = TRUE))
+
+# Load necessary libraries for plotting
+if (!require("ggplot2")) install.packages("ggplot2")
+
+# Create and format the graph
+plot_object <- ggplot(average_premium_over_time, aes(x = year, y = avg_premium)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Average Plan Premium Over Time",
+       x = "Year",
+       y = "Average Premium") +
+  theme_minimal()
+
+# Print the plot
+print(plot_object)
+
+plan_data <- plan_data %>%
+  mutate(zero_premium = ifelse(premium == 0, "Yes", "No"))
+
+# Calculate the percentage of $0 premium plans over time
+percentage_zero_premium <- plan_data %>%
+  group_by(year) %>%
+  summarise(percentage = sum(zero_premium == "Yes") / n())
+
+# Load necessary libraries for plotting
+if (!require("ggplot2")) install.packages("ggplot2")
+
+# Create and format the graph
+plot_object <- ggplot(percentage_zero_premium, aes(x = year, y = percentage * 100)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Percentage of $0 Premium Plans Over Time",
+       x = "Year",
+       y = "Percentage (%)") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  theme_minimal()
+
+# Print the plot
+print(plot_object)
