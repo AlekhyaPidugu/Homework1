@@ -1,3 +1,20 @@
+---
+Title: "Homework 1"
+Subtitle: "Submission 3"
+Author: "Alekhya Pidugu"
+---
+```{r}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest, 
+                scales, gganimate, gapminder, gifski, png, tufte, ploty, OECD,
+                ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary, knitr)
+
+```
+```{r}
+#| echo: false
+#| label: fig.premium
+#| fig-cap: "Share of 0 premium plans"
+```
 ```{r}
 install.packages("knitr")
 install.packages("kableExtra")
